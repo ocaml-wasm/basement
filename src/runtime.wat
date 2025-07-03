@@ -5,7 +5,7 @@
    (import "env" "custom_hash_id" (func $custom_hash_id (param (ref eq)) (result i32)))
 
    (type $block (array (mut (ref eq))))
-   (type $string (array (mut i8)))
+   (type $string (struct (field anyref)))
    (type $bytes (array (mut i8)))
    (type $compare
       (func (param (ref eq)) (param (ref eq)) (param i32) (result i32)))
@@ -18,7 +18,13 @@
    (type $dup (func (param (ref eq)) (result (ref eq))))
    (type $custom_operations
       (struct
+(@if use-js-string
+(@then
+         (field $id (ref $string))
+)
+(@else
          (field $id (ref $bytes))
+))
          (field $compare (ref null $compare))
          (field $compare_ext (ref null $compare))
          (field $hash (ref null $hash))
